@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{5345aaa6-74ae-4c01-8584-b70fa75aa573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_include">
+      <UniqueIdentifier>{39d4512c-264c-4d53-a3f7-a34e203de3ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_include\gtest">
+      <UniqueIdentifier>{d65f3771-1c47-4895-8d2b-62891fee4b87}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\unit_test\_include\gtest\gtest_main.cc">
+      <Filter>src\_include\gtest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\unit_test\_include\gtest\gtest-all.cc">
+      <Filter>src\_include\gtest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\unit_test\test-plusjson.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\unit_test\_include\gtest\gtest.h">
+      <Filter>src\_include\gtest</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
