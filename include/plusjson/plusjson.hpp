@@ -226,7 +226,7 @@ String string_from_json_string(const std::string &json_str, std::size_t &pos) {
             switch (c2) {
             case '\"': str += '\"'; break;
             case '\\': str += '\\'; break;
-            case '/"': str += '/';  break;
+            case '/':  str += '/';  break;
             case 'b':  str += '\b'; break;
             case 'f':  str += '\f'; break;
             case 'n':  str += '\n'; break;
@@ -255,7 +255,7 @@ std::string json_string_from_string(const String &str) {
         switch (*i) {
         case '\"': jstr += "\\\""; break;
         case '\\': jstr += "\\\\"; break;
-        case '/"': jstr += "\\/";  break;
+        case '/':  jstr += "\\/";  break;
         case '\b': jstr += "\\b"; break;
         case '\f': jstr += "\\f"; break;
         case '\n': jstr += "\\n"; break;
