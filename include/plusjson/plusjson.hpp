@@ -125,56 +125,6 @@ public:
     template <class T>
     T get() const throw(std::bad_cast);
 
-    template<>
-    Object get() const throw(std::bad_cast) {
-        if (type_ == TYPE_OBJECT) {
-            return *(value_.object);
-        }
-        else {
-            throw std::bad_cast();
-        }
-    }
-
-    template<>
-    Array get() const throw(std::bad_cast) {
-        if (type_ == TYPE_ARRAY) {
-            return *(value_.array);
-        }
-        else {
-            throw std::bad_cast();
-        }
-    }
-
-    template<>
-    double get() const throw(std::bad_cast) {
-        if (type_ == TYPE_NUMBER) {
-            return value_.number;
-        }
-        else {
-            throw std::bad_cast();
-        }
-    }
-
-    template <>
-    std::string get() const throw(std::bad_cast) {
-        if (type_ == TYPE_STRING) {
-            return *(value_.string);
-        }
-        else {
-            throw std::bad_cast();
-        }
-    }
-
-    template <>
-    bool get() const throw(std::bad_cast) {
-        if (type_ == TYPE_BOOL) {
-            return value_.boolean;
-        }
-        else {
-            throw std::bad_cast();
-        }
-    }
-
 private:
     ValueType type_;
     union {
@@ -186,6 +136,56 @@ private:
         Null null;
     } value_;
 };
+
+template<>
+Object Value::get() const throw(std::bad_cast) {
+    if (type_ == TYPE_OBJECT) {
+        return *(value_.object);
+    }
+    else {
+        throw std::bad_cast();
+    }
+}
+
+template<>
+Array Value::get() const throw(std::bad_cast) {
+    if (type_ == TYPE_ARRAY) {
+        return *(value_.array);
+    }
+    else {
+        throw std::bad_cast();
+    }
+}
+
+template<>
+double Value::get() const throw(std::bad_cast) {
+    if (type_ == TYPE_NUMBER) {
+        return value_.number;
+    }
+    else {
+        throw std::bad_cast();
+    }
+}
+
+template <>
+std::string Value::get() const throw(std::bad_cast) {
+    if (type_ == TYPE_STRING) {
+        return *(value_.string);
+    }
+    else {
+        throw std::bad_cast();
+    }
+}
+
+template <>
+bool Value::get() const throw(std::bad_cast) {
+    if (type_ == TYPE_BOOL) {
+        return value_.boolean;
+    }
+    else {
+        throw std::bad_cast();
+    }
+}
 
 std::string json_string_from_value(const Value &v, const bool readable = true);
 
