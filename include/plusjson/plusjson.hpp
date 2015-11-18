@@ -78,6 +78,7 @@ public:
             case TYPE_OBJECT: value_.object = new Object(*(v.value_.object)); break;
             case TYPE_ARRAY:  value_.array = new Array(*(v.value_.array));   break;
             case TYPE_STRING: value_.string = new String(*(v.value_.string));  break;
+            default: value_ = v.value_;
             }
         }
 
