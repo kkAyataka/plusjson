@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0041041F1BDD0DBB00D57211 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0041041B1BDD0DBB00D57211 /* gtest-all.cc */; };
 		004104201BDD0DBB00D57211 /* gtest_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0041041D1BDD0DBB00D57211 /* gtest_main.cc */; };
-		004104211BDD0DBB00D57211 /* test-plusjson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0041041E1BDD0DBB00D57211 /* test-plusjson.cpp */; };
+		009E635E1BFC8A9E007F2EB8 /* test-plusjson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009E635D1BFC8A9E007F2EB8 /* test-plusjson.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,7 +30,7 @@
 		0041041B1BDD0DBB00D57211 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
 		0041041C1BDD0DBB00D57211 /* gtest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gtest.h; sourceTree = "<group>"; };
 		0041041D1BDD0DBB00D57211 /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gtest_main.cc; sourceTree = "<group>"; };
-		0041041E1BDD0DBB00D57211 /* test-plusjson.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "test-plusjson.cpp"; path = "../../src/unit_test/test-plusjson.cpp"; sourceTree = "<group>"; };
+		009E635D1BFC8A9E007F2EB8 /* test-plusjson.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "test-plusjson.cpp"; path = "../src/unit_test/test-plusjson.cpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +49,7 @@
 			children = (
 				004104161BDD0DAC00D57211 /* include */,
 				004104101BDD0D4300D57211 /* unit_test */,
+				009E635D1BFC8A9E007F2EB8 /* test-plusjson.cpp */,
 				004104021BDD0CBA00D57211 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,9 +66,9 @@
 			isa = PBXGroup;
 			children = (
 				004104191BDD0DBB00D57211 /* _include */,
-				0041041E1BDD0DBB00D57211 /* test-plusjson.cpp */,
 			);
-			path = unit_test;
+			name = unit_test;
+			path = ../src/unit_test;
 			sourceTree = "<group>";
 		};
 		004104161BDD0DAC00D57211 /* include */ = {
@@ -162,7 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				004104211BDD0DBB00D57211 /* test-plusjson.cpp in Sources */,
+				009E635E1BFC8A9E007F2EB8 /* test-plusjson.cpp in Sources */,
 				004104201BDD0DBB00D57211 /* gtest_main.cc in Sources */,
 				0041041F1BDD0DBB00D57211 /* gtest-all.cc in Sources */,
 			);
@@ -287,6 +288,7 @@
 				004104151BDD0D4300D57211 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
