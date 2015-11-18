@@ -89,6 +89,7 @@ public:
         case TYPE_OBJECT: delete value_.object; break;
         case TYPE_ARRAY:  delete value_.array;  break;
         case TYPE_STRING: delete value_.string; break;
+        default: break;
         }
     }
 
