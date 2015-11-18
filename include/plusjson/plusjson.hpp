@@ -306,7 +306,6 @@ Value value_from_json_string(const std::string &json_str, std::size_t* offset) {
     *offset = json_str.find_first_not_of(' ', *offset);
     const char c = json_str.at(*offset);
 
-    std::size_t rs = 0;
     if (c == 'n') { // null
         *offset += 4;
         return Value();
