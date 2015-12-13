@@ -99,33 +99,15 @@ public:
         return type_;
     }
 
-    bool is_object() const {
-        return type_ == TYPE_OBJECT;
-    }
-
-    bool is_array() const {
-        return type_ == TYPE_ARRAY;
-    }
-
-    bool is_number() const {
-        return type_ == TYPE_NUMBER;
-    }
-
-    bool is_string() const {
-        return type_ == TYPE_STRING;
-    }
-
-    bool is_bool() const {
-        return type_ == TYPE_BOOL;
-    }
-
-    bool is_null() const {
-        return type_ == TYPE_NULL;
-    }
+    template <class T>
+    bool is() const;
 
 public:
     template <class T>
-    T get() const throw(std::bad_cast);
+    const T & get() const throw(std::bad_cast);
+
+    template <class T>
+    T & get() throw (std::bad_cast);
 
 private:
     ValueType type_;
@@ -139,55 +121,57 @@ private:
     } value_;
 };
 
-template<>
-Object Value::get() const throw(std::bad_cast) {
-    if (type_ == TYPE_OBJECT) {
-        return *(value_.object);
-    }
-    else {
-        throw std::bad_cast();
-    }
-}
-
-template<>
-Array Value::get() const throw(std::bad_cast) {
-    if (type_ == TYPE_ARRAY) {
-        return *(value_.array);
-    }
-    else {
-        throw std::bad_cast();
-    }
-}
-
-template<>
-double Value::get() const throw(std::bad_cast) {
-    if (type_ == TYPE_NUMBER) {
-        return value_.number;
-    }
-    else {
-        throw std::bad_cast();
-    }
+template <>
+inline bool Value::is<Object>() const {
+    return type_ == TYPE_OBJECT;
 }
 
 template <>
-std::string Value::get() const throw(std::bad_cast) {
-    if (type_ == TYPE_STRING) {
-        return *(value_.string);
-    }
-    else {
-        throw std::bad_cast();
-    }
+inline bool Value::is<Array>() const {
+    return type_ == TYPE_ARRAY;
 }
 
 template <>
-bool Value::get() const throw(std::bad_cast) {
-    if (type_ == TYPE_BOOL) {
-        return value_.boolean;
-    }
-    else {
-        throw std::bad_cast();
-    }
+inline bool Value::is<Number>() const {
+    return type_ == TYPE_NUMBER;
 }
+
+template <>
+inline bool Value::is<String>() const {
+    return type_ == TYPE_STRING;
+}
+
+template <>
+inline bool Value::is<Boolean>() const {
+    return type_ == TYPE_BOOL;
+}
+
+template <>
+inline bool Value::is<Null>() const {
+    return type_ == TYPE_NULL;
+}
+
+#define DEF_GET(Type, val) \
+template <> inline const Type & Value::get() const throw(std::bad_cast) {  \
+    if (!is<Type>()) {  \
+        throw std::bad_cast(); \
+    } \
+    return (val); \
+} \
+template <> inline Type & Value::get() throw(std::bad_cast) { \
+    if (!is<Type>()) {  \
+        throw std::bad_cast(); \
+    } \
+    return (val); \
+}
+
+DEF_GET(Object, *(value_.object))
+DEF_GET(Array, *(value_.array))
+DEF_GET(Number, value_.number)
+DEF_GET(String, *(value_.string))
+DEF_GET(Boolean, value_.boolean)
+
+#undef DEF_GET
 
 std::string json_string_from_value(const Value &v, const bool readable = true);
 
@@ -341,7 +325,7 @@ Value value_from_json_string(const std::string &json_str, std::size_t* offset) {
         Object obj;
         do {
             const Value k = value_from_json_string(json_str, offset);
-            if (!k.is_string()) {
+            if (!k.is<String>()) {
                 break;
             }
             *offset = json_str.find_first_of(':', *offset) + 1;
