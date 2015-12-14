@@ -36,27 +36,27 @@ struct Null {};
 
 class Value {
 public:
-    explicit Value(const Object &object) {
+    explicit Value(const Object & object) {
         type_ = TYPE_OBJECT;
         value_.object = new Object(object);
     }
 
-    explicit Value(const Array &array) {
+    explicit Value(const Array & array) {
         type_ = TYPE_ARRAY;
         value_.array = new Array(array);
     }
 
-    explicit Value(const Number &number) {
+    explicit Value(const Number & number) {
         type_ = TYPE_NUMBER;
         value_.number = number;
     }
 
-    explicit Value(const String &string) {
+    explicit Value(const String & string) {
         type_ = TYPE_STRING;
         value_.string = new String(string);
     }
 
-    explicit Value(const Boolean &boolean) {
+    explicit Value(const Boolean & boolean) {
         type_ = TYPE_BOOL;
         value_.boolean = boolean;
     }
@@ -66,11 +66,11 @@ public:
         value_.null = Null();
     }
 
-    Value(const Value& v) {
+    Value(const Value & v) {
         *this = v;
     }
 
-    const Value& operator=(const Value& v) {
+    const Value & operator=(const Value & v) {
         if (this != &v) {
             type_ = v.type_;
 
@@ -173,11 +173,11 @@ DEF_GET(Boolean, value_.boolean)
 
 #undef DEF_GET
 
-std::string json_string_from_value(const Value &v, const bool readable = true);
+std::string json_string_from_value(const Value & v, const bool readable = true);
 
 namespace detail {
 
-Number number_from_json_string(const std::string &json_str, std::size_t &pos) {
+Number number_from_json_string(const std::string & json_str, std::size_t & pos) {
     const std::size_t bp = pos;
     for (; pos < json_str.size(); ++pos) {
         const char c = json_str[pos];
@@ -202,7 +202,7 @@ std::string json_string_from_number(const Number v) {
     return sstm.str();
 }
 
-String string_from_json_string(const std::string &json_str, std::size_t &pos) {
+String string_from_json_string(const std::string & json_str, std::size_t & pos) {
     std::string str;
     pos += 1; // skip first '\"'
     for (; pos < json_str.size(); ++pos) {
@@ -235,7 +235,7 @@ String string_from_json_string(const std::string &json_str, std::size_t &pos) {
     return str;
 }
 
-std::string json_string_from_string(const String &str) {
+std::string json_string_from_string(const String & str) {
     std::string jstr = "\"";
     for (std::string::const_iterator i = str.begin(); i < str.end(); ++i) {
         switch (*i) {
@@ -257,7 +257,7 @@ std::string json_string_from_string(const String &str) {
     return jstr;
 }
 
-std::string json_string_from_array(const Array &arr) {
+std::string json_string_from_array(const Array & arr) {
     std::string js = "[";
     for (Array::const_iterator i = arr.begin(); i != arr.end(); ++i) {
         if (i != arr.begin()) {
@@ -271,7 +271,7 @@ std::string json_string_from_array(const Array &arr) {
     return js;
 }
 
-std::string json_string_from_object(const Object &obj, const bool readable) {
+std::string json_string_from_object(const Object & obj, const bool readable) {
     std::string js = (readable) ? "{\n" : "{";
     for (Object::const_iterator i = obj.begin(); i != obj.end(); ++i) {
         if (i != obj.begin()) {
@@ -288,7 +288,7 @@ std::string json_string_from_object(const Object &obj, const bool readable) {
     return js;
 }
 
-Value value_from_json_string(const std::string &json_str, std::size_t* offset) {
+Value value_from_json_string(const std::string & json_str, std::size_t * offset) {
     *offset = json_str.find_first_not_of(' ', *offset);
     const char c = json_str.at(*offset);
 
@@ -346,7 +346,7 @@ Value value_from_json_string(const std::string &json_str, std::size_t* offset) {
 
 } // namespace detail
 
-Value value_from_json_string(const std::string &json_str) {
+Value value_from_json_string(const std::string & json_str) {
     std::string str = json_str;
     std::replace(str.begin(), str.end(), '\r', ' ');
     std::replace(str.begin(), str.end(), '\n', ' ');
@@ -355,7 +355,7 @@ Value value_from_json_string(const std::string &json_str) {
     return detail::value_from_json_string(str, &p);
 }
 
-std::string json_string_from_value(const Value &v, const bool readable) {
+std::string json_string_from_value(const Value & v, const bool readable) {
     switch (v.type()) {
     case TYPE_NULL:
         return "null";
