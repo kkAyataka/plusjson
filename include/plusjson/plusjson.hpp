@@ -100,6 +100,27 @@ public:
     }
 
 public:
+    bool operator==(const Value & v) const {
+        if (type_ == v.type_) {
+            switch (type_) {
+            case TYPE_OBJECT: return *(value_.object) == *(v.value_.object);
+            case TYPE_ARRAY: return *(value_.array) == *(v.value_.array);
+            case TYPE_STRING: return *(value_.string) == *(v.value_.string);
+            case TYPE_NUMBER: return value_.number == v.value_.number;
+            case TYPE_BOOLEAN: return value_.boolean == v.value_.boolean;
+            default:
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    bool operator!=(const Value & v) const {
+        return !((*this) == v);
+    }
+
     ValueType get_type() const {
         return type_;
     }
