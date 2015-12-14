@@ -56,6 +56,11 @@ public:
         value_.string = new String(string);
     }
 
+    explicit Value(const char * string) {
+        type_ = TYPE_STRING;
+        value_.string = new String(string);
+    }
+
     explicit Value(const Boolean & boolean) {
         type_ = TYPE_BOOLEAN;
         value_.boolean = boolean;
