@@ -95,7 +95,7 @@ public:
     }
 
 public:
-    ValueType type() const {
+    ValueType get_type() const {
         return type_;
     }
 
@@ -356,7 +356,7 @@ Value value_from_json_string(const std::string & json_str) {
 }
 
 std::string json_string_from_value(const Value & v, const bool readable) {
-    switch (v.type()) {
+    switch (v.get_type()) {
     case TYPE_NULL:
         return "null";
     case TYPE_BOOL:
