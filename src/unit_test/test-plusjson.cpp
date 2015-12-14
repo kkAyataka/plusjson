@@ -52,3 +52,15 @@ TEST(JSON, value) {
     ASSERT_EQ(v.is<plusjson::Null>(), true);
     ASSERT_EQ(v.get_type(), plusjson::TYPE_NULL);
 }
+
+TEST(JSON, value__value) {
+    plusjson::Value v1(1.1);
+    plusjson::Value v2(v1);
+
+    ASSERT_EQ(v2.get_type(), plusjson::TYPE_NUMBER);
+    ASSERT_EQ(v2.get<plusjson::Number>(), v1.get<plusjson::Number>());
+    ASSERT_EQ(v2, v1);
+
+    v1.get<plusjson::Number>() = 2;
+    ASSERT_NE(v2, v1);
+}
