@@ -22,7 +22,7 @@ typedef enum {
     TYPE_ARRAY,
     TYPE_NUMBER,
     TYPE_STRING,
-    TYPE_BOOL,
+    TYPE_BOOLEAN,
     TYPE_NULL,
 } ValueType;
 
@@ -57,7 +57,7 @@ public:
     }
 
     explicit Value(const Boolean & boolean) {
-        type_ = TYPE_BOOL;
+        type_ = TYPE_BOOLEAN;
         value_.boolean = boolean;
     }
 
@@ -143,7 +143,7 @@ inline bool Value::is<String>() const {
 
 template <>
 inline bool Value::is<Boolean>() const {
-    return type_ == TYPE_BOOL;
+    return type_ == TYPE_BOOLEAN;
 }
 
 template <>
@@ -359,7 +359,7 @@ std::string json_string_from_value(const Value & v, const bool readable) {
     switch (v.get_type()) {
     case TYPE_NULL:
         return "null";
-    case TYPE_BOOL:
+    case TYPE_BOOLEAN:
         return (v.get<bool>()) ? "true" : "false";
     case TYPE_NUMBER:
         return detail::json_string_from_number(v.get<double>());
