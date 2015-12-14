@@ -39,7 +39,7 @@ TEST(JSON, value__string_char) {
     ASSERT_EQ(v.is<plusjson::String>(), true);
 }
 
-TEST(JSON, value_boolean) {
+TEST(JSON, value__boolean) {
     plusjson::Value v(true);
 
     ASSERT_EQ(v.get_type(), plusjson::TYPE_BOOLEAN);
