@@ -17,7 +17,6 @@
 namespace plusjson {
 
 typedef enum {
-    TYPE_UNKNOWN,
     TYPE_OBJECT,
     TYPE_ARRAY,
     TYPE_NUMBER,
