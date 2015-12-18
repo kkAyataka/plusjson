@@ -27,11 +27,12 @@ typedef enum {
 } ValueType;
 
 class Value;
-typedef std::map<std::string, Value> Object;
-typedef std::vector<Value> Array;
-typedef double Number;
-typedef std::string String;
 typedef bool Boolean;
+typedef std::string String;
+typedef double Number;
+typedef std::vector<Value> Array;
+typedef std::map<String, Value> Object;
+
 struct Null {};
 
 class Value {
@@ -212,7 +213,7 @@ Number number_from_json_string(const std::string & json_str, std::size_t & pos) 
         }
     }
 
-    double v = 0;
+    Number v = 0;
     std::stringstream sstm;
     sstm << json_str.substr(bp, pos - bp);
     sstm >> v;
@@ -388,9 +389,9 @@ std::string json_string_from_value(const Value & v, const bool readable) {
     case TYPE_BOOLEAN:
         return (v.get<bool>()) ? "true" : "false";
     case TYPE_NUMBER:
-        return detail::json_string_from_number(v.get<double>());
+        return detail::json_string_from_number(v.get<Number>());
     case TYPE_STRING:
-        return detail::json_string_from_string(v.get<std::string>());
+        return detail::json_string_from_string(v.get<String>());
     case TYPE_ARRAY:
         return detail::json_string_from_array(v.get<Array>());
     case TYPE_OBJECT:
