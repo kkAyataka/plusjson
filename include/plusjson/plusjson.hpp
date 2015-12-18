@@ -17,22 +17,21 @@
 namespace plusjson {
 
 typedef enum {
-    TYPE_OBJECT,
-    TYPE_ARRAY,
-    TYPE_NUMBER,
-    TYPE_STRING,
-    TYPE_BOOLEAN,
     TYPE_NULL,
+    TYPE_BOOLEAN,
+    TYPE_STRING,
+    TYPE_NUMBER,
+    TYPE_ARRAY,
+    TYPE_OBJECT
 } ValueType;
 
 class Value;
+struct Null {};
 typedef bool Boolean;
 typedef std::string String;
 typedef double Number;
 typedef std::vector<Value> Array;
 typedef std::map<String, Value> Object;
-
-struct Null {};
 
 class Value {
 public:
