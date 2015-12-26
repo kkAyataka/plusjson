@@ -130,3 +130,15 @@ TEST(JSON, copy_and_eq_null) {
     ASSERT_EQ(v1, v2);
     ASSERT_NE(v1, v3);
 }
+
+// get
+
+TEST(JSON, get_invalid_type) {
+    plusjson::Object o;
+    o["k"] = plusjson::Value(1.0);
+
+    const plusjson::Value v(o);
+
+    ASSERT_EQ(v.get<plusjson::Object>(), o);
+    ASSERT_THROW(v.get<plusjson::Number>(), std::bad_cast);
+}
