@@ -59,10 +59,10 @@ TEST(JSON, value__value) {
 
     ASSERT_EQ(v2.get_type(), plusjson::TYPE_NUMBER);
     ASSERT_EQ(v2.get<plusjson::Number>(), v1.get<plusjson::Number>());
-    ASSERT_EQ(v2, v1);
+    ASSERT_TRUE(v2 == v1);
 
     v1.get<plusjson::Number>() = 2;
-    ASSERT_NE(v2, v1);
+    ASSERT_FALSE(v2 == v1);
 }
 
 // Copy constructor, =, == and != operator
@@ -77,13 +77,13 @@ void test_copy_and_eq(const T raw1, const T raw2) {
     plusjson::Value v3;
     v3 = v2;
 
-    ASSERT_EQ(v1, v2);
-    ASSERT_EQ(v1, v3);
+    ASSERT_TRUE(v1 == v2);
+    ASSERT_TRUE(v1 == v3);
 
     v1.get<T>() = raw2;
 
-    ASSERT_NE(v1, v2);
-    ASSERT_NE(v1, v3);
+    ASSERT_FALSE(v1 == v2);
+    ASSERT_FALSE(v1 == v3);
 }
 
 } // no namespace
@@ -127,8 +127,8 @@ TEST(JSON, copy_and_eq_null) {
     const plusjson::Value v2;
     const plusjson::Value v3(1.0);
 
-    ASSERT_EQ(v1, v2);
-    ASSERT_NE(v1, v3);
+    ASSERT_TRUE(v1 == v2);
+    ASSERT_FALSE(v1 == v3);
 }
 
 // get
@@ -139,6 +139,6 @@ TEST(JSON, get_invalid_type) {
 
     const plusjson::Value v(o);
 
-    ASSERT_EQ(v.get<plusjson::Object>(), o);
+    ASSERT_TRUE(v.get<plusjson::Object>() == o);
     ASSERT_THROW(v.get<plusjson::Number>(), std::bad_cast);
 }
