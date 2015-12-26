@@ -334,7 +334,7 @@ std::string to_json_string(const Array & arr, const bool readable) {
             js += (readable) ? ", " : ",";
         }
 
-        js += to_json_string(*i);
+        js += to_json_string(*i, readable);
     }
 
     js += "]";
@@ -345,13 +345,13 @@ std::string to_json_string(const Object & obj, const bool readable) {
     std::string js = (readable) ? "{\n" : "{";
     for (Object::const_iterator i = obj.begin(); i != obj.end(); ++i) {
         if (i != obj.begin()) {
-            js += (readable) ? ", \n" : ", ";
+            js += (readable) ? ", \n" : ",";
         }
 
         js += (readable) ? "  " : "";
         js += to_json_string(i->first);
-        js += ": ";
-        js += to_json_string(i->second);
+        js += (readable) ? ": " : ":";
+        js += to_json_string(i->second, readable);
     }
 
     js += (readable) ? "\n}\n" : "}";
