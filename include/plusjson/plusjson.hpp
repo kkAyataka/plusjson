@@ -35,32 +35,32 @@ typedef std::map<String, Value> Object;
 
 class Value {
 public:
-    explicit Value(const Object & object) {
+    Value(const Object & object) {
         type_ = TYPE_OBJECT;
         value_.object = new Object(object);
     }
 
-    explicit Value(const Array & array) {
+    Value(const Array & array) {
         type_ = TYPE_ARRAY;
         value_.array = new Array(array);
     }
 
-    explicit Value(const Number & number) {
+    Value(const Number & number) {
         type_ = TYPE_NUMBER;
         value_.number = number;
     }
 
-    explicit Value(const String & string) {
+    Value(const String & string) {
         type_ = TYPE_STRING;
         value_.string = new String(string);
     }
 
-    explicit Value(const char * string) {
+    Value(const char * string) {
         type_ = TYPE_STRING;
         value_.string = new String(string);
     }
 
-    explicit Value(const Boolean & boolean) {
+    Value(const Boolean & boolean) {
         type_ = TYPE_BOOLEAN;
         value_.boolean = boolean;
     }
