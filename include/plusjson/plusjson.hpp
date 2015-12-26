@@ -282,11 +282,11 @@ std::string to_json_string(const String & str) {
     return jstr;
 }
 
-std::string to_json_string(const Array & arr) {
+std::string to_json_string(const Array & arr, const bool readable) {
     std::string js = "[";
     for (Array::const_iterator i = arr.begin(); i != arr.end(); ++i) {
         if (i != arr.begin()) {
-            js += ", ";
+            js += (readable) ? ", " : ",";
         }
 
         js += to_json_string(*i);
@@ -391,7 +391,7 @@ std::string to_json_string(const Value & v, const bool readable) {
     case TYPE_STRING:
         return detail::to_json_string(v.get<String>());
     case TYPE_ARRAY:
-        return detail::to_json_string(v.get<Array>());
+        return detail::to_json_string(v.get<Array>(), readable);
     case TYPE_OBJECT:
         return detail::to_json_string(v.get<Object>(), readable);
     default:
