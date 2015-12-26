@@ -148,6 +148,12 @@ public:
     /** Only array. */
     Value & operator[](const std::size_t index) throw(std::bad_cast);
 
+    operator Object() const;
+    operator Array() const;
+    operator Number() const;
+    operator String() const;
+    operator Boolean() const;
+
 private:
     ValueType type_;
     union {
@@ -223,6 +229,19 @@ inline Value & Value::operator[](const std::string key) throw(std::bad_cast) {
 inline Value & Value::operator[](const std::size_t index) throw(std::bad_cast) {
     return get<Array>()[index];
 }
+
+#define DEF_CAST(Type) \
+inline Value::operator Type() const { \
+    return get<Type>(); \
+}
+
+DEF_CAST(Object)
+DEF_CAST(Array)
+DEF_CAST(Number)
+DEF_CAST(String)
+DEF_CAST(Boolean)
+
+#undef DEF_CAST
 
 std::string to_json_string(const Value & v, const bool readable = true);
 
