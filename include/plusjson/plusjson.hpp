@@ -385,7 +385,7 @@ std::string to_json_string(const Value & v, const bool readable) {
     case TYPE_NULL:
         return "null";
     case TYPE_BOOLEAN:
-        return (v.get<bool>()) ? "true" : "false";
+        return (v.get<Boolean>()) ? "true" : "false";
     case TYPE_NUMBER:
         return detail::to_json_string(v.get<Number>());
     case TYPE_STRING:
