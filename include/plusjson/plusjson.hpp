@@ -26,7 +26,7 @@ typedef enum {
 } ValueType;
 
 class Value;
-struct Null {};
+typedef struct {} Null;
 typedef bool Boolean;
 typedef std::string String;
 typedef double Number;
