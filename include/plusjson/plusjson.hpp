@@ -198,11 +198,11 @@ DEF_GET(Boolean, value_.boolean)
 
 #undef DEF_GET
 
-std::string json_string_from_value(const Value & v, const bool readable = true);
+std::string to_json_string(const Value & v, const bool readable = true);
 
 namespace detail {
 
-Number number_from_json_string(const std::string & json_str, std::size_t & pos) {
+Number to_number(const std::string & json_str, std::size_t & pos) {
     const std::size_t bp = pos;
     for (; pos < json_str.size(); ++pos) {
         const char c = json_str[pos];
@@ -219,7 +219,7 @@ Number number_from_json_string(const std::string & json_str, std::size_t & pos) 
     return v;
 }
 
-std::string json_string_from_number(const Number v) {
+std::string to_json_string(const Number v) {
     std::stringstream sstm;
     sstm.precision(16);
     sstm << v;
@@ -227,7 +227,7 @@ std::string json_string_from_number(const Number v) {
     return sstm.str();
 }
 
-String string_from_json_string(const std::string & json_str, std::size_t & pos) {
+String to_string(const std::string & json_str, std::size_t & pos) {
     std::string str;
     pos += 1; // skip first '\"'
     for (; pos < json_str.size(); ++pos) {
@@ -260,7 +260,7 @@ String string_from_json_string(const std::string & json_str, std::size_t & pos) 
     return str;
 }
 
-std::string json_string_from_string(const String & str) {
+std::string to_json_string(const String & str) {
     std::string jstr = "\"";
     for (std::string::const_iterator i = str.begin(); i < str.end(); ++i) {
         switch (*i) {
@@ -282,21 +282,21 @@ std::string json_string_from_string(const String & str) {
     return jstr;
 }
 
-std::string json_string_from_array(const Array & arr) {
+std::string to_json_string(const Array & arr) {
     std::string js = "[";
     for (Array::const_iterator i = arr.begin(); i != arr.end(); ++i) {
         if (i != arr.begin()) {
             js += ", ";
         }
 
-        js += json_string_from_value(*i);
+        js += to_json_string(*i);
     }
 
     js += "]";
     return js;
 }
 
-std::string json_string_from_object(const Object & obj, const bool readable) {
+std::string to_json_string(const Object & obj, const bool readable) {
     std::string js = (readable) ? "{\n" : "{";
     for (Object::const_iterator i = obj.begin(); i != obj.end(); ++i) {
         if (i != obj.begin()) {
@@ -304,16 +304,16 @@ std::string json_string_from_object(const Object & obj, const bool readable) {
         }
 
         js += (readable) ? "  " : "";
-        js += json_string_from_string(i->first);
+        js += to_json_string(i->first);
         js += ": ";
-        js += json_string_from_value(i->second);
+        js += to_json_string(i->second);
     }
 
     js += (readable) ? "\n}\n" : "}";
     return js;
 }
 
-Value value_from_json_string(const std::string & json_str, std::size_t * offset) {
+Value to_value(const std::string & json_str, std::size_t * offset) {
     *offset = json_str.find_first_not_of(' ', *offset);
     const char c = json_str.at(*offset);
 
@@ -330,16 +330,16 @@ Value value_from_json_string(const std::string & json_str, std::size_t * offset)
         return Value(true);
     }
     else if (c == '-' || (c >= '0' && c <= '9')) { // number
-        return Value(number_from_json_string(json_str, *offset));
+        return Value(to_number(json_str, *offset));
     }
     else if (c == '\"') { // string
-        return Value(string_from_json_string(json_str, *offset));
+        return Value(to_string(json_str, *offset));
     }
     else if (c == '[') { // Array
         *offset += 1;
         Array arr;
         do {
-            arr.push_back(value_from_json_string(json_str, offset));
+            arr.push_back(to_value(json_str, offset));
             *offset = json_str.find_first_not_of(' ', *offset);
         } while (*offset < json_str.size() && json_str[*offset] != ']');
 
@@ -349,12 +349,12 @@ Value value_from_json_string(const std::string & json_str, std::size_t * offset)
         *offset += 1;
         Object obj;
         do {
-            const Value k = value_from_json_string(json_str, offset);
+            const Value k = to_value(json_str, offset);
             if (!k.is<String>()) {
                 break;
             }
             *offset = json_str.find_first_of(':', *offset) + 1;
-            const Value v = value_from_json_string(json_str, offset);
+            const Value v = to_value(json_str, offset);
 
             obj[k.get<String>()] = v;
 
@@ -371,29 +371,29 @@ Value value_from_json_string(const std::string & json_str, std::size_t * offset)
 
 } // namespace detail
 
-Value value_from_json_string(const std::string & json_str) {
+Value to_value(const std::string & json_str) {
     std::string str = json_str;
     std::replace(str.begin(), str.end(), '\r', ' ');
     std::replace(str.begin(), str.end(), '\n', ' ');
     std::replace(str.begin(), str.end(), '\t', ' ');
     std::size_t p = 0;
-    return detail::value_from_json_string(str, &p);
+    return detail::to_value(str, &p);
 }
 
-std::string json_string_from_value(const Value & v, const bool readable) {
+std::string to_json_string(const Value & v, const bool readable) {
     switch (v.get_type()) {
     case TYPE_NULL:
         return "null";
     case TYPE_BOOLEAN:
         return (v.get<bool>()) ? "true" : "false";
     case TYPE_NUMBER:
-        return detail::json_string_from_number(v.get<Number>());
+        return detail::to_json_string(v.get<Number>());
     case TYPE_STRING:
-        return detail::json_string_from_string(v.get<String>());
+        return detail::to_json_string(v.get<String>());
     case TYPE_ARRAY:
-        return detail::json_string_from_array(v.get<Array>());
+        return detail::to_json_string(v.get<Array>());
     case TYPE_OBJECT:
-        return detail::json_string_from_object(v.get<Object>(), readable);
+        return detail::to_json_string(v.get<Object>(), readable);
     default:
         return "";
     }
