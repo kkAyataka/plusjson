@@ -65,6 +65,11 @@ public:
         value_.boolean = boolean;
     }
 
+    Value(const Null & null) {
+        type_ = TYPE_NULL;
+        value_.null = Null();
+    }
+
     Value() {
         type_ = TYPE_NULL;
         value_.null = Null();
