@@ -139,6 +139,15 @@ public:
     template <class T>
     T & get() throw (std::bad_cast);
 
+    /** Only object. */
+    Value & operator[](const char * key) throw(std::bad_cast);
+
+    /** Only object. */
+    Value & operator[](const std::string key) throw(std::bad_cast);
+
+    /** Only array. */
+    Value & operator[](const std::size_t index) throw(std::bad_cast);
+
 private:
     ValueType type_;
     union {
@@ -202,6 +211,18 @@ DEF_GET(String, *(value_.string))
 DEF_GET(Boolean, value_.boolean)
 
 #undef DEF_GET
+
+inline Value & Value::operator[](const char * key) throw(std::bad_cast) {
+    return get<Object>()[key];
+}
+
+inline Value & Value::operator[](const std::string key) throw(std::bad_cast) {
+    return (*this)[key.c_str()];
+}
+
+inline Value & Value::operator[](const std::size_t index) throw(std::bad_cast) {
+    return get<Array>()[index];
+}
 
 std::string to_json_string(const Value & v, const bool readable = true);
 
