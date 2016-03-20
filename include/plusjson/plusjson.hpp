@@ -341,20 +341,39 @@ std::string to_json_string(const Array & arr, const bool readable) {
     return js;
 }
 
-std::string to_json_string(const Object & obj, const bool readable) {
+std::string to_json_string(const Object & obj, const bool readable, unsigned int & indent) {
+
+    std::vector<char> indent_str((indent + 1) * 2, ' ');
+    indent_str.push_back(0); // null terminater
+
     std::string js = (readable) ? "{\n" : "{";
     for (Object::const_iterator i = obj.begin(); i != obj.end(); ++i) {
         if (i != obj.begin()) {
-            js += (readable) ? ", \n" : ",";
+            js += (readable) ? ",\n" : ",";
         }
 
-        js += (readable) ? "  " : "";
+        js += (readable) ? &indent_str[0] : "";
         js += to_json_string(i->first);
         js += (readable) ? ": " : ":";
-        js += to_json_string(i->second, readable);
+        if (i->second.is<Object>()) {
+            js += to_json_string(i->second, readable, ++indent);
+        }
+        else {
+            js += to_json_string(i->second, readable);
+        }
     }
 
-    js += (readable) ? "\n}\n" : "}";
+    if (readable) {
+        indent_str.insert(indent_str.end() - 3, 0);
+
+        js += "\n";
+        js += &indent_str[0];
+        js += "}";
+    }
+    else {
+        js += "}";
+    }
+
     return js;
 }
 
@@ -426,6 +445,7 @@ Value from_json_string(const std::string & json_str) {
 }
 
 std::string to_json_string(const Value & v, const bool readable) {
+    unsigned int indent = 0;
     switch (v.get_type()) {
     case TYPE_NULL:
         return "null";
@@ -438,7 +458,7 @@ std::string to_json_string(const Value & v, const bool readable) {
     case TYPE_ARRAY:
         return detail::to_json_string(v.get<Array>(), readable);
     case TYPE_OBJECT:
-        return detail::to_json_string(v.get<Object>(), readable);
+        return detail::to_json_string(v.get<Object>(), readable, indent);
     default:
         return "";
     }
