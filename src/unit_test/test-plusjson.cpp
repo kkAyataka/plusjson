@@ -142,3 +142,29 @@ TEST(JSON, get_invalid_type) {
     ASSERT_TRUE(v.get<plusjson::Object>() == o);
     ASSERT_THROW(v.get<plusjson::Number>(), std::bad_cast);
 }
+
+// to json string
+
+TEST(JSON, to_json_string) {
+    plusjson::Array arr;
+    arr.push_back(true);
+    arr.push_back(false);
+    arr.push_back(1.1);
+    arr.push_back("String");
+    arr.push_back(arr);
+    arr.push_back(plusjson::Null());
+
+    plusjson::Value v = plusjson::Object();
+    v["Null"] = plusjson::Null();
+    v["True"] = true;
+    v["False"] = false;
+    v["Array"] = arr;
+
+    const std::string ok_json_str =
+        "{\"Array\":[true,false,1.1,\"String\",[true,false,1.1,\"String\"],null],"
+        "\"False\":false,\"Null\":null,\"True\":true}";
+    const std::string json_str = to_json_string(v, false);
+    ASSERT_EQ(json_str, ok_json_str);
+
+    //std::cout << json_str << std::endl;
+}
