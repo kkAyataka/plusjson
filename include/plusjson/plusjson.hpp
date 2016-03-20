@@ -76,25 +76,35 @@ public:
     }
 
     Value(const Value & v) {
-        *this = v;
+        init(v);
     }
 
     const Value & operator=(const Value & v) {
         if (this != &v) {
-            type_ = v.type_;
-
-            switch (type_) {
-            case TYPE_OBJECT: value_.object = new Object(*(v.value_.object)); break;
-            case TYPE_ARRAY:  value_.array = new Array(*(v.value_.array));   break;
-            case TYPE_STRING: value_.string = new String(*(v.value_.string));  break;
-            default: value_ = v.value_;
-            }
+            del();
+            init(v);
         }
 
         return *this;
     }
 
     ~Value() {
+        del();
+    }
+
+private:
+    inline void init(const Value & v) {
+        type_ = v.type_;
+
+        switch (type_) {
+        case TYPE_OBJECT: value_.object = new Object(*(v.value_.object)); break;
+        case TYPE_ARRAY:  value_.array = new Array(*(v.value_.array));   break;
+        case TYPE_STRING: value_.string = new String(*(v.value_.string));  break;
+        default: value_ = v.value_;
+        }
+    }
+
+    inline void del() {
         switch (type_) {
         case TYPE_OBJECT: delete value_.object; break;
         case TYPE_ARRAY:  delete value_.array;  break;
