@@ -447,9 +447,11 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
 
 Value from_json_string(const std::string & json_str) {
     std::string str = json_str;
-    std::replace(str.begin(), str.end(), '\r', ' ');
-    std::replace(str.begin(), str.end(), '\n', ' ');
-    std::replace(str.begin(), str.end(), '\t', ' ');
+    for (auto i = str.begin(); i != str.end(); ++i) {
+        if (*i == '\r' || *i == '\n' || *i == '\t') {
+            *i = ' ';
+        }
+    }
     std::size_t p = 0;
     return detail::from_json_string(str, &p);
 }
