@@ -284,7 +284,7 @@ std::string to_json_string(const Number v) {
 
 String to_string(const std::string & json_str, std::size_t & pos) {
     std::string str;
-    pos += 1; // skip first '\"'
+    ++pos; // skip first '\"'
     for (; pos < json_str.size(); ++pos) {
         const char c1 = json_str[pos];
         if (c1 == '\\') {
@@ -305,6 +305,7 @@ String to_string(const std::string & json_str, std::size_t & pos) {
             }
         }
         else if (c1 == '\"') {
+            ++pos; // skip end '\"'
             break;
         }
         else {
