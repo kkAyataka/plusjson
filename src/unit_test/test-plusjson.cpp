@@ -169,6 +169,17 @@ TEST(JSON, to_json_string) {
     //std::cout << json_str << std::endl;
 }
 
+TEST(JSON, from_json_string) {
+    const std::string json_str =
+        "{\"Array\":[true,false,1.1,\"String\",[true,false,1.1,\"String\"],null],"
+        "\"False\":false,\"Null\":null,\"True\":true}";
+
+    const plusjson::Value js = plusjson::from_json_string(json_str);
+    const std::string json_str_from = to_json_string(js, false);
+    std::cout << json_str_from;
+    ASSERT_EQ(json_str_from, json_str);
+}
+
 TEST(JSON, to_json_string_formatted) {
     plusjson::Value v = plusjson::Object();
     v["Null"] = plusjson::Null();
