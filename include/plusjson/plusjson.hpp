@@ -419,7 +419,7 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
             *offset = json_str.find_first_not_of(',', *offset);
         } while (*offset < json_str.size() && json_str[*offset] != ']');
 
-        *offset += 1; // skip end '['
+        *offset += 1; // skip end ']'
 
         return Value(arr);
     }
@@ -447,7 +447,7 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
             *offset = json_str.find_first_not_of(',', *offset);
         } while (*offset < json_str.size() && json_str[*offset] != '}');
 
-        *offset += 1; // skip end '{'
+        *offset += 1; // skip end '}'
 
         return Value(obj);
     }
