@@ -181,6 +181,26 @@ TEST(JSON, from_json_string) {
     //std::cout << json_str_from;
 }
 
+TEST(JSON, from_json_string2) {
+    const std::string json_str =
+    "{"
+      "\"a\":true,"
+      "\"b\":[1,2,3],"
+      "\"c\":{"
+        "\"d\":false,"
+        "\"e\":{"
+        "\"f\":[true,false,1.1]"
+        "},"
+        "\"g\":10.1"
+        "},"
+      "\"h\":\"end#\""
+    "}";
+
+    const plusjson::Value v = plusjson::from_json_string(json_str);
+    ASSERT_EQ(plusjson::to_json_string(v, true), json_str);
+    //std::cout << plusjson::to_json_string(v, true) << std::endl;
+}
+
 TEST(JSON, to_json_string_formatted) {
     plusjson::Value v = plusjson::Object();
     v["Null"] = plusjson::Null();
