@@ -442,7 +442,6 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
 
             obj[k.get<String>()] = v;
 
-            *offset += 1;
             *offset = json_str.find_first_not_of(' ', *offset);
             *offset = json_str.find_first_not_of(',', *offset);
         } while (*offset < json_str.size() && json_str[*offset] != '}');
