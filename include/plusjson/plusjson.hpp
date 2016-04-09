@@ -431,14 +431,23 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
             if (!k.is<String>()) {
                 break;
             }
-            *offset = json_str.find_first_of(':', *offset) + 1;
+            *offset = json_str.find_first_of(':', *offset);
+            if (*offset >= json_str.size()) {
+                throw std::invalid_argument("Can not parse json string");
+            }
+
+            *offset += 1; // skip ':'
+
             const Value v = from_json_string(json_str, offset);
 
             obj[k.get<String>()] = v;
 
             *offset += 1;
             *offset = json_str.find_first_not_of(' ', *offset);
+            *offset = json_str.find_first_not_of(',', *offset);
         } while (*offset < json_str.size() && json_str[*offset] != '}');
+
+        *offset += 1; // skip end '{'
 
         return Value(obj);
     }
