@@ -197,7 +197,7 @@ TEST(JSON, from_json_string2) {
     "}";
 
     const plusjson::Value v = plusjson::from_json_string(json_str);
-    ASSERT_EQ(plusjson::to_json_string(v, true), json_str);
+    ASSERT_EQ(plusjson::to_json_string(v, false), json_str);
     //std::cout << plusjson::to_json_string(v, true) << std::endl;
 }
 
