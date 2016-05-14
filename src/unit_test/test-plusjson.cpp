@@ -88,7 +88,7 @@ void test_copy_and_eq(const T raw1, const T raw2) {
 
 } // no namespace
 
-TEST(JSON, copy_and_ep_object) {
+TEST(JSON, copy_and_eq_object) {
     plusjson::Object o1;
     o1["key"] = plusjson::Value("Value");
 
@@ -107,11 +107,11 @@ TEST(JSON, copy_and_eq_array) {
     test_copy_and_eq(a1, a2);
 }
 
-TEST(JSON, copy_and_ep_number) {
+TEST(JSON, copy_and_eq_number) {
     test_copy_and_eq(123.4, -1.1);
 }
 
-TEST(JSON, copy_and_ep_string) {
+TEST(JSON, copy_and_eq_string) {
     const plusjson::String s1 = "StringA";
     const plusjson::String s2 = "I'm lovin' it";
 
