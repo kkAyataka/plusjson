@@ -153,7 +153,7 @@ public:
     Value & operator[](const char * key) throw(std::bad_cast);
 
     /** Only object. */
-    Value & operator[](const std::string key) throw(std::bad_cast);
+    Value & operator[](const String key) throw(std::bad_cast);
 
     /** Only array. */
     Value & operator[](const std::size_t index) throw(std::bad_cast);
@@ -232,7 +232,7 @@ inline Value & Value::operator[](const char * key) throw(std::bad_cast) {
     return get<Object>()[key];
 }
 
-inline Value & Value::operator[](const std::string key) throw(std::bad_cast) {
+inline Value & Value::operator[](const String key) throw(std::bad_cast) {
     return (*this)[key.c_str()];
 }
 
