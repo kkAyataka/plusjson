@@ -388,7 +388,7 @@ std::string to_json_string(const Object & obj, const bool readable, unsigned int
     return js;
 }
 
-Value from_json_string(const std::string & json_str, std::size_t * offset) {
+Value to_value(const std::string & json_str, std::size_t * offset) {
     *offset = json_str.find_first_not_of(' ', *offset);
     const char c = json_str.at(*offset);
 
@@ -414,7 +414,7 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
         *offset += 1;
         Array arr;
         do {
-            arr.push_back(from_json_string(json_str, offset));
+            arr.push_back(to_value(json_str, offset));
             *offset = json_str.find_first_not_of(' ', *offset);
             *offset = json_str.find_first_not_of(',', *offset);
         } while (*offset < json_str.size() && json_str[*offset] != ']');
@@ -427,7 +427,7 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
         *offset += 1;
         Object obj;
         do {
-            const Value k = from_json_string(json_str, offset);
+            const Value k = to_value(json_str, offset);
             if (!k.is<String>()) {
                 break;
             }
@@ -438,7 +438,7 @@ Value from_json_string(const std::string & json_str, std::size_t * offset) {
 
             *offset += 1; // skip ':'
 
-            const Value v = from_json_string(json_str, offset);
+            const Value v = to_value(json_str, offset);
 
             obj[k.get<String>()] = v;
 
@@ -465,7 +465,7 @@ Value from_json_string(const std::string & json_str) {
         }
     }
     std::size_t p = 0;
-    return detail::from_json_string(str, &p);
+    return detail::to_value(str, &p);
 }
 
 std::string to_json_string(const Value & v, const bool readable) {
