@@ -388,7 +388,7 @@ std::string to_json_string(const Object & obj, const bool readable, unsigned int
     return js;
 }
 
-Value to_value(const std::string & json_str, std::size_t * offset) {
+Value to_value(const std::string & json_str, std::size_t * offset) throw(std::invalid_argument) {
     *offset = json_str.find_first_not_of(' ', *offset);
     const char c = json_str.at(*offset);
 
@@ -457,7 +457,7 @@ Value to_value(const std::string & json_str, std::size_t * offset) {
 
 } // namespace detail
 
-Value from_json_string(const std::string & json_str) {
+Value from_json_string(const std::string & json_str) throw(std::invalid_argument) {
     std::string str = json_str;
     for (auto i = str.begin(); i != str.end(); ++i) {
         if (*i == '\r' || *i == '\n' || *i == '\t') {
